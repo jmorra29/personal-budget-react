@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+
 function HomePage() {
   return (
     <main className="container center">
@@ -63,15 +65,9 @@ function HomePage() {
                 </p>
             </article>
     
-            <article>
-                <h1>Budget Chart</h1>
-                <p>
-                    <canvas id="myChart" width="400" height="400"></canvas>
-                </p>
-            </article>
+            
 
         </div>
-
     </main>
   );
 }
