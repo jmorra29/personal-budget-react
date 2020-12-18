@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Budget</title>
+    <meta name="description" content="A free personal budger app">
+    <meta name="keywords" content="app free budget finance">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+
+<a href="#main" class="skip">Skip to content</a>
+    <body onload="checkCred()"></body>
+    <nav>
+        <ul>
+            <li><a href="about.html">Home</a></li>
+            <li><a href="logout.html">Logout</a></li>
+            <li><a href="charts.html">Charts</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h1>Personal Budget</h1>
+        <h2>A personal-budget management app</h2>
+    </div>
+
+    <main class="center" id="main">
+
+        <div class="page-area">    
+            <article>
+                <h1>Pie Chart</h1>
+                <p>
+                    <canvas id="pieChart" width="400" height="400"></canvas>
+                </p>
+                <h2>Bar Chart</h2>
+                <p>
+                    <canvas id="barChart" width="400" height="400"></canvas>
+                </p>
+                <h3>Polar Chart</h3>
+                <p>
+                    <canvas id="polarChart" width="400" height="400"></canvas>
+                </p>
+            </article>
+
+        </div>
+
+    </main>
+
+    <footer class="bottom">
+        <div class="center">
+            All rights reserved &copy; Fabio Nolasco
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+    <script>
+
+        function checkCred(){
+            const token = localStorage.getItem('jwt');
+            axios.get('/api/dashboard', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res => {
+                if (res && res.data && res.data.success){
+                    
+                } else {
+                    window.location.href = "/index.html";
+                }
+            });
+        }
+
+        var dataSource = {
+            datasets:[
+                {
+                    data: [],
+                    backgroundColor: [],
+                }
+            ],
+            labels: []
+        };
+
+        function createChartBar(){
+            var ctx = document.getElementById("barChart").getContext("2d");
+            var myPieChart = new Chart(ctx, {
+                type: 'bar',
+                data: dataSource
+                
+            });
+            console.log(dataSource)
+        }
+
+        function createChartPie(){
+            var ctx = document.getElementById("pieChart").getContext("2d");
+            var myBarChart = new Chart(ctx, {
+                type: 'pie',
+                data: dataSource
+                
+            });
+            console.log(dataSource)
+        }
+
+        function createChartPolar(){
+            var ctx = document.getElementById("polarChart").getContext("2d");
+            var myBarChart = new Chart(ctx, {
+                type: 'polarArea',
+                data: dataSource
+                
+            });
+            console.log(dataSource)
+        }
+
+        
+
+        
+        var arrayLength;
+        function getBudget() {
+            axios.get('/budget')
+            .then(function(res) {
+                var array = res.data;
+                arrayLength = Object.keys(array).length
+                console.log(res);
+                console.log(array);
+                for(var i = 0; i < arrayLength; i++){
+                    dataSource.datasets[0].data[i] = array[i].budget;
+                    dataSource.datasets[0].backgroundColor[i] = array[i].color;
+                    dataSource.labels[i] = array[i].title;
+                }
+                createChartBar();
+                createChartPie();
+                createChartPolar();
+            });
+        }
+        getBudget();
+    </script>
+</body>
+</html>

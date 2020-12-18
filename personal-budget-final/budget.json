@@ -1,0 +1,16 @@
+{
+    "myBudget":[
+        {"title":"Take Out", "budget":"35"},
+        {"title":"Rent", "budget":"200"},
+        {"title":"Grocery", "budget":"100"},
+        {"title":"Laundry", "budget":"10"},
+        {"title":"Recreation", "budget":"75"},
+        {"title":"Utilities", "budget":"120"},
+        {"title":"Fuel", "budget":"60"},
+        {"title":"Insurance", "budget":"100"},
+        {"title":"Prescriptions", "budget":"30"},
+        {"title":"Hobbies", "budget":"60"},
+        {"title":"Misc", "budget":"50"},
+        {"title":"Investments", "budget":"75"}
+    ]
+}
